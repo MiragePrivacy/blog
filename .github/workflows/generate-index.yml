@@ -2,9 +2,19 @@ name: Generate posts.json
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "posts/**.md"
       - ".github/workflows/generate-index.yml"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "posts/**.md"
+      - ".github/workflows/generate-index.yml"
+
   workflow_dispatch:
 
 jobs:
