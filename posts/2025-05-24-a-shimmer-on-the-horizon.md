@@ -5,6 +5,7 @@ tags: ["announcement", "general"]
 author: "Nima Rasooli"
 ---
 
-# Mirage
+# The beginning of something
 
-A shimmer on the horizon...
+Nothing to announce.
+Not officially, anyway.
