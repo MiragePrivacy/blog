@@ -1,16 +1,17 @@
 name: Generate posts.json
 
+permissions:
+  contents: write
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - "posts/**.md"
       - ".github/workflows/generate-index.yml"
 
   pull_request:
-    branches:
-      - main
+    branches: [main]
     paths:
       - "posts/**.md"
       - ".github/workflows/generate-index.yml"
@@ -20,9 +21,13 @@ on:
 jobs:
   build-index:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -35,9 +40,9 @@ jobs:
       - name: Run generator
         run: node scripts/generate-index.js
 
-      # Commit the updated JSON back to main
       - name: Commit & push
-        uses: EndBug/add-and-commit@v9  # simple 1-step commit :contentReference[oaicite:2]{index=2}
+        uses: EndBug/add-and-commit@v9
         with:
           add: "public/posts.json"
           message: "chore: update posts index [skip ci]"
+          push: origin HEAD:${{ github.head_ref || github.ref_name }}
