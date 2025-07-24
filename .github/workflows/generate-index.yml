@@ -1,0 +1,48 @@
+name: Generate posts.json
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "posts/**.md"
+      - ".github/workflows/generate-index.yml"
+
+  pull_request:
+    branches: [main]
+    paths:
+      - "posts/**.md"
+      - ".github/workflows/generate-index.yml"
+
+  workflow_dispatch:
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: npm install gray-matter
+
+      - name: Run generator
+        run: node scripts/generate-index.js
+
+      - name: Commit & push
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "public/posts.json"
+          message: "chore: update posts index [skip ci]"
+          push: origin HEAD:${{ github.head_ref || github.ref_name }}
