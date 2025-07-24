@@ -1,0 +1,33 @@
+name: Generate posts.json
+
+on:
+  push:
+    paths:
+      - "posts/**.md"
+      - ".github/workflows/generate-index.yml"
+  workflow_dispatch:
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: npm install gray-matter
+
+      - name: Run generator
+        run: node scripts/generate-index.js
+
+      # Commit the updated JSON back to main
+      - name: Commit & push
+        uses: EndBug/add-and-commit@v9  # simple 1-step commit :contentReference[oaicite:2]{index=2}
+        with:
+          add: "public/posts.json"
+          message: "chore: update posts index [skip ci]"
