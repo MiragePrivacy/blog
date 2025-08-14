@@ -18,7 +18,7 @@ Privacy is notoriously difficult on public blockchains, some of the most adversa
 
 Just as blockchains face the famous trilemma, privacy on blockchains confronts a polylemma: interconnected challenges that amplify one another and defy straightforward solutions.
 
-![The Privacy Polylemma](../assets/2025-08-14-introducing-mirage/The_Privacy_Polylemma.png)
+![The Privacy Polylemma](https://raw.githubusercontent.com/MiragePrivacy/Blog/refs/heads/main/assets/2025-08-14-introducing-mirage/The_Privacy_Polylemma.png)
 
 Challenges include pooled funds with strangers, unwanted associations with unknown actors and their histories, and the stigma of visible privacy use that prompts compliance issues with exchanges and institutions. High costs make privacy inaccessible for everyday transactions, while many designs require chain-hopping to other networks, fragmenting the experience and introducing unfamiliar trust assumptions.
 
