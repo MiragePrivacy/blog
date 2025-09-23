@@ -1,5 +1,16 @@
 [
   {
+    "link": "/posts/2025-08-22-introducing-azoth",
+    "title": "Introducing Azoth: A Deterministic EVM Bytecode Obfuscator",
+    "date": "2025-08-22",
+    "tags": [
+      "announcement",
+      "azoth"
+    ],
+    "author": "Samuel Alake",
+    "image": "https://raw.githubusercontent.com/MiragePrivacy/Blog/refs/heads/main/assets/2025-08-22-introducing-azoth/azoth.jpg"
+  },
+  {
     "link": "/posts/2025-08-14-introducing-mirage",
     "title": "Introducing Mirage",
     "date": "2025-08-14",
@@ -8,6 +19,6 @@
       "general"
     ],
     "author": "Nima Rasooli",
-    "image": "https://raw.githubusercontent.com/MiragePrivacy/Blog/refs/heads/main/assets/2025-08-14-introducing-mirage/mirage.png"
+    "image": "https://raw.githubusercontent.com/MiragePrivacy/Blog/refs/heads/main/assets/2025-08-14-introducing-mirage/Mirage.jpg"
   }
 ]
