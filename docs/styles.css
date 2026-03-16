@@ -3,6 +3,40 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ── Hero grid background ── */
+.hero-grid {
+  position: relative;
+  overflow: visible;
+}
+
+.hero-grid::before {
+  content: "";
+  position: absolute;
+  top: -48px;
+  left: -24px;
+  right: -24px;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(249, 115, 22, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(249, 115, 22, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 80% at 20% 50%, black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 20% 50%, black 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark .hero-grid::before {
+  background-image:
+    linear-gradient(rgba(249, 115, 22, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(249, 115, 22, 0.12) 1px, transparent 1px);
+}
+
+.hero-grid > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* ── Global resets for landing ── */
 [data-layout="landing"] .vocs_Button_button {
   border-radius: 4px !important;
@@ -42,7 +76,7 @@
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.06);
   transition: border-color 0.2s ease, transform 0.2s ease;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--vocs-color_background, #fff);
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -55,7 +89,7 @@
 
 :root:not(.dark) .post-card {
   border-color: rgba(0, 0, 0, 0.08);
-  background: rgba(0, 0, 0, 0.02);
+  background: var(--vocs-color_background, #fff);
 }
 
 :root:not(.dark) .post-card:hover {
