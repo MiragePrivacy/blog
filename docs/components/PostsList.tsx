@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { assetUrl } from "./Asset";
 
 interface PostFrontmatter {
   title: string;
@@ -93,14 +92,14 @@ export default function PostsList() {
           >
             <div className="post-card">
               <img
-                src={assetUrl(post.cover)}
+                src={post.cover}
                 alt={post.title}
                 className="post-card-image"
               />
               <div className="post-card-body">
                 <div className="author-row">
                   <img
-                    src={assetUrl(post.authorImg)}
+                    src={post.authorImg}
                     alt={post.author}
                     className="author-img"
                   />
