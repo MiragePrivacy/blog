@@ -47,7 +47,7 @@ function getInitialTag() {
   return tag && allTags.includes(tag) ? tag : null;
 }
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 
 export default function PostsList() {
   const [activeTag, setActiveTag] = useState<string | null>(getInitialTag);

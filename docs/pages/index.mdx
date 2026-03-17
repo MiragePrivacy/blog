@@ -6,7 +6,7 @@ layout: landing
 showLogo: false
 ---
 
-export const base = import.meta.env.BASE_URL
+export const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
 
 <div className="max-w-[960px] mx-auto px-[24px] mt-[48px] mb-[80px] hero-grid">
 
