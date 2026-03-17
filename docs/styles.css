@@ -1,4 +1,5 @@
 @import url("https://use.typekit.net/vuc5xtg.css");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -266,6 +267,14 @@
   margin-left: 8px;
 }
 
-* {
+/* Roc Grotesk for headings, nav-bar, and links */
+h1, h2, h3, h4, h5, h6,
+nav, nav *,
+a {
   font-family: "roc-grotesk", sans-serif !important;
+}
+
+/* Inter for body/paragraph text */
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif !important;
 }
