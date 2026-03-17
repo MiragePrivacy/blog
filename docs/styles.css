@@ -1,0 +1,357 @@
+@import url("https://use.typekit.net/vuc5xtg.css");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Hero grid background ── */
+.hero-grid {
+  position: relative;
+  overflow: visible;
+}
+
+.hero-grid::before {
+  content: "";
+  position: absolute;
+  top: -48px;
+  left: -24px;
+  right: -24px;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(249, 115, 22, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(249, 115, 22, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 80% at 20% 50%, black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 20% 50%, black 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark .hero-grid::before {
+  background-image:
+    linear-gradient(rgba(249, 115, 22, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(249, 115, 22, 0.12) 1px, transparent 1px);
+}
+
+.hero-grid > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Global resets for landing ── */
+[data-layout="landing"] .vocs_Button_button {
+  border-radius: 4px !important;
+  height: 36px !important;
+  padding: 0 16px !important;
+}
+
+[data-layout="landing"] .vocs_Content {
+  position: inherit;
+}
+
+[data-layout="landing"] .vocs_Button_button.vocs_ExternalLink:after {
+  display: none !important;
+}
+
+/* ── Post card grid (desktop) ── */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.post-grid > a {
+  display: flex;
+}
+
+/* ── Post scroll (homepage cards) ── */
+.post-scroll {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.post-scroll > a,
+.post-scroll-item {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .post-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .post-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding-bottom: 8px;
+  }
+
+  .post-scroll > a,
+  .post-scroll-item {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+  }
+
+  .post-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .post-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+.post-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  background: var(--vocs-color_background, #fff);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.post-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+:root:not(.dark) .post-card {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: var(--vocs-color_background, #fff);
+}
+
+:root:not(.dark) .post-card:hover {
+  border-color: rgba(0, 0, 0, 0.16);
+}
+
+/* Card cover image */
+.post-card-image {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card body */
+.post-card-body {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card-body > :last-child {
+  margin-top: auto;
+}
+
+/* ── Author row ── */
+.author-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.author-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(249, 115, 22, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f97316;
+  flex-shrink: 0;
+}
+
+.author-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* ── Tag pills ── */
+.tag-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  color: #f97316;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tag-pill:hover {
+  background: rgba(249, 115, 22, 0.15);
+}
+
+.tag-pill-active {
+  background: #f97316;
+  color: white;
+  border-color: #f97316;
+}
+
+.tag-pill-active:hover {
+  background: #ea580c;
+  border-color: #ea580c;
+}
+
+/* ── Tag filter bar ── */
+.tag-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag-filters .tag-pill {
+  background: none;
+}
+
+/* ── Card footer (tags + read more) ── */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* ── Read more link ── */
+.read-more {
+  font-size: 14px;
+  font-weight: 500;
+  color: #f97316;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+
+.read-more:hover {
+  opacity: 0.8;
+}
+
+/* ── See All Posts ── */
+.see-all-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.see-all-btn {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 8px;
+  padding: 10px 24px;
+  transition: background 0.15s, border-color 0.15s;
+  text-decoration: none !important;
+}
+
+.see-all-btn:hover {
+  background: rgba(249, 115, 22, 0.08);
+  border-color: #f97316;
+}
+
+/* ── Blog posts list styling (fallback listing page) ── */
+.vocs_BlogPosts a {
+  text-decoration: none !important;
+}
+
+/* ── Dark mode image treatment for PNGs ── */
+.dark img[src$=".png"]:not([src*="logo"]):not(.post-card-image):not(.author-img) {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+/* ── Article page styling ── */
+.vocs_Content h1:first-of-type {
+  font-size: 2.25rem !important;
+  line-height: 1.2 !important;
+  font-weight: 600 !important;
+}
+
+/* ── Footer ── */
+.site-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  padding: 24px 0;
+  font-size: 13px;
+  color: #919193;
+}
+
+:root:not(.dark) .site-footer {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ── Accent overrides (links + inline code) ── */
+:root {
+  --vocs-color_textAccent: #f97316 !important;
+  --vocs-color_textAccentHover: #ea580c !important;
+  --vocs-color_link: #f97316 !important;
+  --vocs-color_linkHover: #ea580c !important;
+  --vocs-color_codeInlineBorder: rgba(249, 115, 22, 0.2) !important;
+  --vocs-color_codeInlineText: #f97316 !important;
+}
+
+.dark {
+  --vocs-color_textAccent: #f97316 !important;
+  --vocs-color_textAccentHover: #fb923c !important;
+  --vocs-color_link: #f97316 !important;
+  --vocs-color_linkHover: #fb923c !important;
+  --vocs-color_codeInlineBorder: rgba(249, 115, 22, 0.2) !important;
+  --vocs-color_codeInlineText: #f97316 !important;
+}
+
+/* ── Search: hide detail preview pane ── */
+.vocs_SearchDialog_excerpt {
+  display: none !important;
+}
+
+/* ── H1 autolink icon: prevent covering content ── */
+.vocs_Content h1 .vocs_Autolink {
+  position: relative;
+}
+
+.vocs_Content h1:first-of-type .vocs_Autolink {
+  position: static;
+  display: inline;
+  margin-left: 8px;
+}
+
+/* Roc Grotesk for headings, nav-bar, and links */
+h1, h2, h3, h4, h5, h6,
+nav, nav *,
+a {
+  font-family: "roc-grotesk", sans-serif !important;
+}
+
+/* Inter for body/paragraph text */
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif !important;
+}
