@@ -2,6 +2,9 @@ import { defineConfig } from "vocs";
 
 export default defineConfig({
   basePath: process.env.BASE_PATH || undefined,
+  theme: {
+    colorScheme: "system",
+  },
   title: "Mirage Blog",
   logoUrl: "/logo.svg",
   iconUrl: "/logo.svg",
