@@ -5,10 +5,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [isArticle, setIsArticle] = useState(false);
 
   useEffect(() => {
+    const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     const isBlogPost =
-      window.location.pathname.startsWith("/blog/") &&
-      window.location.pathname !== "/blog/" &&
-      window.location.pathname !== "/blog";
+      window.location.pathname.startsWith(`${basePath}/posts/`) &&
+      window.location.pathname !== `${basePath}/posts/` &&
+      window.location.pathname !== `${basePath}/posts`;
     setIsArticle(isBlogPost);
 
     if (!isBlogPost) return;

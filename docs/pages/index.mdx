@@ -6,12 +6,14 @@ layout: landing
 showLogo: false
 ---
 
+export const base = import.meta.env.BASE_URL
+
 <div className="max-w-[960px] mx-auto px-[24px] mt-[48px] mb-[80px] hero-grid">
 
   {/* ── Header / Hero ── */}
   <div className="mb-[56px]">
     <div className="flex items-center gap-4 mb-6">
-      <img src="/logo.svg" alt="Mirage" className="w-[56px] h-[56px] rounded-xl" />
+      <img src={`${base}logo.svg`} alt="Mirage" className="w-[56px] h-[56px] rounded-xl" />
       <h1 className="text-[36px] max-sm:text-[28px] font-bold text-black dark:text-white m-0 leading-tight" style={{ margin: 0 }}>
           The Mirage Privacy Blog
       </h1>
@@ -25,16 +27,16 @@ showLogo: false
   <div className="post-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '32px' }}>
 
     {/* ── Card: Introducing Azoth ── */}
-    <a href="/posts/introducing-azoth" className="vocs_Link vocs_Link_styleless" style={{ textDecoration: 'none' }}>
+    <a href={`${base}posts/introducing-azoth`} className="vocs_Link vocs_Link_styleless" style={{ textDecoration: 'none' }}>
       <div className="post-card">
         <img
-          src="/assets/azoth.jpg"
+          src={`${base}assets/azoth.jpg`}
           alt="Introducing Azoth"
           className="post-card-image"
         />
         <div className="post-card-body">
           <div className="author-row">
-            <img src="/assets/samuel.png" alt="Samuel Alake" className="author-img" />
+            <img src={`${base}assets/samuel.png`} alt="Samuel Alake" className="author-img" />
             <span className="text-[13px] text-[#919193]">Samuel Alake</span>
             <span className="text-[13px] text-[#919193]">·</span>
             <span className="text-[13px] text-[#919193]">Aug 22, 2025</span>
@@ -47,8 +49,8 @@ showLogo: false
           </span>
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
-              <a href="/posts?tag=announcement" className="tag-pill" onClick={(e) => e.stopPropagation()}>announcement</a>
-              <a href="/posts?tag=azoth" className="tag-pill" onClick={(e) => e.stopPropagation()}>azoth</a>
+              <a href={`${base}posts?tag=announcement`} className="tag-pill" onClick={(e) => e.stopPropagation()}>announcement</a>
+              <a href={`${base}posts?tag=azoth`} className="tag-pill" onClick={(e) => e.stopPropagation()}>azoth</a>
             </div>
             <span className="read-more">Read More →</span>
           </div>
@@ -57,17 +59,17 @@ showLogo: false
     </a>
 
     {/* ── Card: Introducing Mirage ── */}
-    <a href="/posts/introducing-mirage" className="vocs_Link vocs_Link_styleless" style={{ textDecoration: 'none' }}>
+    <a href={`${base}posts/introducing-mirage`} className="vocs_Link vocs_Link_styleless" style={{ textDecoration: 'none' }}>
       <div className="post-card">
         <img
-          src="/assets/mirage.png"
+          src={`${base}assets/mirage.png`}
           alt="Introducing Mirage"
           className="post-card-image"
           style={{ background: 'none', padding: 0, borderRadius: 0 }}
         />
         <div className="post-card-body">
           <div className="author-row">
-            <img src="/assets/nima.jpg" alt="Nima Rasooli" className="author-img" />
+            <img src={`${base}assets/nima.jpg`} alt="Nima Rasooli" className="author-img" />
             <span className="text-[13px] text-[#919193]">Nima Rasooli</span>
             <span className="text-[13px] text-[#919193]">·</span>
             <span className="text-[13px] text-[#919193]">Aug 14, 2025</span>
@@ -80,8 +82,8 @@ showLogo: false
           </span>
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
-              <a href="/posts?tag=announcement" className="tag-pill" onClick={(e) => e.stopPropagation()}>announcement</a>
-              <a href="/posts?tag=general" className="tag-pill" onClick={(e) => e.stopPropagation()}>general</a>
+              <a href={`${base}posts?tag=announcement`} className="tag-pill" onClick={(e) => e.stopPropagation()}>announcement</a>
+              <a href={`${base}posts?tag=general`} className="tag-pill" onClick={(e) => e.stopPropagation()}>general</a>
             </div>
             <span className="read-more">Read More →</span>
           </div>

@@ -47,6 +47,8 @@ function getInitialTag() {
   return tag && allTags.includes(tag) ? tag : null;
 }
 
+const base = import.meta.env.BASE_URL;
+
 export default function PostsList() {
   const [activeTag, setActiveTag] = useState<string | null>(getInitialTag);
 
@@ -86,20 +88,20 @@ export default function PostsList() {
         {filtered.map((post) => (
           <a
             key={post.path}
-            href={post.path}
+            href={`${base}${post.path.replace(/^\//, '')}`}
             className="vocs_Link vocs_Link_styleless"
             style={{ textDecoration: "none" }}
           >
             <div className="post-card">
               <img
-                src={post.cover}
+                src={`${base}${post.cover.replace(/^\//, '')}`}
                 alt={post.title}
                 className="post-card-image"
               />
               <div className="post-card-body">
                 <div className="author-row">
                   <img
-                    src={post.authorImg}
+                    src={`${base}${post.authorImg.replace(/^\//, '')}`}
                     alt={post.author}
                     className="author-img"
                   />
