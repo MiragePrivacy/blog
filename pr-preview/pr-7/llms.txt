@@ -1,7 +1,0 @@
-# Mirage Blog
-
-## Docs
-
-- [Posts](/pr-preview/pr-7/posts)
-- [Introducing Azoth: A Deterministic EVM Bytecode Obfuscator](/pr-preview/pr-7/posts/introducing-azoth): We're excited to introduce Azoth, an open-source EVM bytecode obfuscator. It preserves contract logic while dissolving recognizable patterns, making reverse engineering at scale costly and impractical.
-- [Introducing Mirage](/pr-preview/pr-7/posts/introducing-mirage): Mirage: the bet on flexible, Ethereum-native stablecoin privacy.
