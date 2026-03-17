@@ -28,7 +28,7 @@ export default defineConfig({
     },
     {
       text: "App",
-      link: "https://app.mirageprivacy.com",
+      link: "https://mirageprivacy.com",
     },
   ],
   sidebar: {

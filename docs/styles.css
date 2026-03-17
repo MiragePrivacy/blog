@@ -53,11 +53,27 @@
   display: none !important;
 }
 
-/* ── Post card grid ── */
+/* ── Post card grid (desktop) ── */
 .post-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 32px;
+}
+
+.post-grid > a {
+  display: flex;
+}
+
+/* ── Post scroll (homepage cards) ── */
+.post-scroll {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.post-scroll > a,
+.post-scroll-item {
+  display: flex;
 }
 
 @media (max-width: 768px) {
@@ -65,11 +81,30 @@
     grid-template-columns: 1fr;
     gap: 24px;
   }
-}
 
-/* ── Post card ── */
-.post-grid > a {
-  display: flex;
+  .post-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding-bottom: 8px;
+  }
+
+  .post-scroll > a,
+  .post-scroll-item {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+  }
+
+  .post-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .post-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 .post-card {
@@ -188,16 +223,58 @@
   background: none;
 }
 
+/* ── Card footer (tags + read more) ── */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
 /* ── Read more link ── */
 .read-more {
   font-size: 14px;
   font-weight: 500;
   color: #f97316;
   transition: opacity 0.15s;
+  white-space: nowrap;
 }
 
 .read-more:hover {
   opacity: 0.8;
+}
+
+/* ── See All Posts ── */
+.see-all-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.see-all-btn {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 8px;
+  padding: 10px 24px;
+  transition: background 0.15s, border-color 0.15s;
+  text-decoration: none !important;
+}
+
+.see-all-btn:hover {
+  background: rgba(249, 115, 22, 0.08);
+  border-color: #f97316;
 }
 
 /* ── Blog posts list styling (fallback listing page) ── */
