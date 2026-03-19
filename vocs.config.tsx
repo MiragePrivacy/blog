@@ -23,12 +23,16 @@ export default defineConfig({
   topNav: [
 
     {
-      text: "Docs",
+      text: "Documentation",
       link: "https://docs.mirageprivacy.com",
     },
     {
       text: "App",
       link: "https://mirageprivacy.com",
+    },
+    {
+      text: "About Us",
+      link: "https://mirageprivacy.com/about-us",
     },
   ],
   sidebar: {
