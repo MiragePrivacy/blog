@@ -32,7 +32,7 @@ export default defineConfig({
     },
     {
       text: "About Us",
-      link: "https://mirageprivacy.com/about-us",
+      link: "https://mirageprivacy.com/#/about",
     },
   ],
   sidebar: {
