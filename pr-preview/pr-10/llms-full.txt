@@ -1,0 +1,193 @@
+# Mirage Blog
+
+## Blog
+
+::blog-posts
+
+
+## Introducing Azoth: A Deterministic EVM Bytecode Obfuscator
+
+::authors
+
+We're excited to introduce Azoth, an open-source EVM bytecode obfuscator. It preserves contract logic while dissolving recognizable patterns, making reverse engineering at scale costly and impractical.
+
+### Preface
+
+I first came across the term *program obfuscation* in this blog post: [Programmable Cryptography I](https://0xparc.org/blog/programmable-cryptography-1) around November 2024, and I was hell-bent on practically proving the concept. Next thing I know, [Mirage](https://mirageprivacy.com)
+
+Here's an analogy for Mirage: say Alice wants to make an on-chain transaction such that an outside observer cannot easily tell if Alice's on-chain action is a privacy-seeking transaction or just business as usual. Mirage is how Alice gets that executed. In Mirage, users fulfill their transactions by executing contracts whose runtime bytecode has been obfuscated on the EVM.
+
+### Wait, why is bytecode obfuscation needed?
+
+Ethereum smart contracts are public by design. Once deployed, anyone can inspect their bytecode and reverse engineer the logic, function selectors, and control-flow structure. For most projects, this transparency is part of the trust model. But for Mirage, it's a liability. Mirage's privacy guarantees depend on preventing outside observers from distinguishing a privacy-seeking transaction from an ordinary one.
+
+The danger is simple: if Mirage bytecode looks recognizable, an adversary can tag it and trace every interaction. That breaks privacy before it starts. Obfuscation flips the economics. Reverse engineering one contract is possible, but at scale it's a losing game.
+
+This is where bytecode obfuscation becomes essential: it makes reverse engineering and signature-based detection materially harder while maintaining functionality. It ensures that function dispatchers, control flow, and constants are concealed, so a Mirage contract looks statistically similar to unrelated contracts on-chain. And because Mirage's contracts are open-source and auditable, there is no new trust assumption. You can enjoy the benefits of obfuscation while keeping it fully trustless.
+
+### What is Azoth?
+
+In alchemy, [Azoth](https://www.wikiwand.com/en/articles/Azoth) was the legendary universal solvent, said to heal, transform, and protect. In Ethereum, we take up the role of alchemists, and Azoth becomes our solvent: an obfuscator that transforms EVM bytecode to protect privacy.
+
+Azoth's primary goal is to produce multiple, deterministic variants of the same bytecode that are hard to recognize and fingerprint at scale. It is not about protecting a single deployed contract (which can be deobfuscated once) or providing security guarantees. Instead, its power comes when used at scale to hide the same underlying logic across many obfuscated deployments. For an adversary to reverse engineer them, they must first detect that a contract is obfuscated, deobfuscate it and then repeat that same process for every contract instance. At that point, the process becomes prohibitively expensive in both time and computation.
+
+While Mirage is our main use case, [Azoth](https://github.com/MiragePrivacy/Azoth) is open source and available to anyone. It works by surgically obfuscating runtime bytecode, preserving semantics but disrupting structural patterns.
+
+### The Alchemy of Azoth
+
+Azoth works in three stages: dissolve, transform, reconstitute. First it peels off the clean runtime code. Then it scrambles selectors, control flow, and constants so the usual bytecode fingerprints vanish. Finally, it stitches the contract back together, fully functional but unrecognizable. The result is the same logic in many unique disguises.
+
+#### 1. Dissolution
+
+Azoth starts by decoding the raw byte stream into an instruction stream with program counters and immediates. It then performs sectioning to separate the creation code from the persistent runtime while also peeling off auxdata and other trailing metadata. When the creation scaffold is present, that boundary is used directly. Specifically, "boundary" is in reference to the precise split between the creation program that executes once, and the runtime blob it returns. Concretely, the creation program copies the embedded runtime into memory and returns it; the `RETURN (0xF3)` marks the end of creation execution, and the `CODECOPY` source/length delimit the runtime slice (often visible as `... f3 fe 60 80 60 40 ...`, with runtime starting right after `f3 fe`); this looks like:
+
+```
+; creation scaffold (PUSHn -> PUSH1/2/3/4 depending on size)
+PUSHn <len>  PUSHn <src>  PUSH* <dst>  CODECOPY
+PUSHn <len>  PUSHn <dst>              RETURN   ; 0xF3
+; often followed by an 0xFE sentinel from solc
+```
+
+When the scaffold is not unambiguous, Azoth actively probes for a Solidity‑style dispatcher over sliding windows of the instruction stream and uses the first positive hit to anchor the start of runtime. The probe looks for selector extraction followed by comparison blocks. Common extraction shapes include:
+
+```
+; standard selector extraction (Solidity style)
+[PUSH0 | PUSH1 0x00]  CALLDATALOAD  PUSH1 0xe0  SHR
+
+; tolerated variants that appear in the wild
+CALLDATALOAD  PUSH1 0xe0  SHR
+```
+
+Once a candidate extraction is seen, the detector seeks repeated comparison/jump blocks of the form:
+
+`DUP1  PUSH4 <imm>  (EQ|GT)  PUSH{1..4} <addr>  JUMPI`
+
+The earliest convincing occurrence of this sequence in a plausible window anchors the runtime start. With the boundary fixed, a strip step removes everything that isn't runtime and produces a clean runtime blob together with a compact report describing what was removed, the exact byte/PC ranges, and a PC remapping for round‑trip reconstruction. Over this cleaned slice Azoth builds a control‑flow graph and IR to make subsequent rewrites safe.
+
+#### 2. Transformation
+
+Azoth currently applies four transforms:
+
+##### Function Dispatcher (major transform)
+
+A typical Solidity bytecode exposes selectors and a tell‑tale dispatcher table and anyone can basically recognize what function was being called:
+
+```
+PUSH1 0x00  CALLDATALOAD  PUSH1 0xe0  SHR
+DUP1  PUSH4 0xa9059cbb  EQ  PUSH1 0x30  JUMPI
+DUP1  PUSH4 0x7ff36ab5  EQ  PUSH1 0x1a  JUMPI
+```
+
+Fingerprinting this at scale is trivial. So what does Azoth do?
+
+* **Tokenizes selectors:** we take the original 4-byte function selector `s` to obtain a 4-byte token `t` using a keyed Keccak hash with a secret seed; mathematically, `t = Keccak(seed || s)[..4]`.
+* **Disguises extraction:** avoids the signature `CALLDATALOAD; SHR 0xe0` by:
+  * Generating a zero value on the stack using non-obvious ops (e.g., `PUSH x; PUSH x; SUB or XOR`), or briefly storing/loading from memory with `MSTORE/MLOAD`.
+  * Loading calldata with `CALLDATALOAD` at a position/order that doesn't match Solidity's clean sequence.
+  * Masking the result with `AND` and a token-width mask (e.g., `0xffffffff` for 4-byte tokens) instead of shifting 224 bits. This preserves semantics but breaks the classic dispatcher signature.
+* **Comparison style:** the rewriter currently emits `EQ` comparisons and may reorder the check order. (GT pivot chains are recognized by detection but not emitted.)
+
+For example:
+
+```
+; disguise 0 (SUB val val) | or XOR or MSTORE/MLOAD
+PUSH1 0x37
+PUSH1 0x37
+SUB
+
+; load calldata and mask to token width
+CALLDATALOAD
+PUSH4 0xffffffff
+AND
+DUP1
+
+; compare against tokenized selector
+PUSH4 0x04cad84c   ; token for original selector (example)
+EQ
+PUSH1 0x29
+JUMPI
+; ... next comparisons ...
+```
+
+Given the same seed, tokenization is deterministic.
+
+##### Opaque Predicate
+
+Injects always-true (or always-false) predicates built from cheap arithmetic or constant-equality (e.g., `XOR + ISZERO` or `EQ` on identical constants). Adds dummy control-flow that never influences observable behavior but explodes/complicates CFG shape.
+
+##### Shuffle (block‑level)
+
+This is a simple block-level randomization that changes program layout without affecting execution. For example, `0x60015b6002` -> `0x5b60026001`. As of now, it does not shuffle instructions inside a block yet (that's planned).
+
+##### Jump Address Transformer
+
+Rewrites direct jump immediates into small arithmetic expressions that recompute the same target at runtime. For example, it replaces `PUSH1 0x42 JUMP` with `PUSH1 0x20 PUSH1 0x22 ADD JUMP`
+
+#### Reconstitution
+
+After the whole transformation process, Azoth re-assembles the obfuscated runtime bytecode with non-runtime sections: auxdata, trailing metadata, etc. How does it do this?
+
+* **Encode:** First, Azoth encodes the sequence of transformed IR into their corresponding bytecode representation.
+* **Re-assembling:** then it fixes the obfuscated runtime with the stripped non-runtime code, according to the strip report.
+* **Verification (in progress):** The verification stack includes:
+  * Practical testing via EVM simulation (state/output/event/gas equivalence),
+  * Formal verification systems (semantic extraction + SMT/Z3 integration and proof objects) is designed to prove behavior preservation for all inputs. The framework and types are in place; proofs and property catalogs are being built out. The pipeline's goal is to fail-shut if any divergence is found.
+
+### Check it out!
+
+We invite you to explore the [Azoth](https://github.com/MiragePrivacy/Azoth) repository, try it out, and share feedback. If you find a way to break Azoth's obfuscation or prove semantic inequivalence, we want to talk.
+
+
+import privacyPolylemmaImage from "../../public/assets/privacy-polylemma.png";
+
+## Introducing Mirage
+
+::authors
+
+Mirage: the bet on flexible, Ethereum-native stablecoin privacy.
+
+A privacy layer enabling stablecoin transactions on Ethereum with confidentiality intact, free from regulatory risk, stigma, and complexity common in existing privacy tools. Funds remain on Ethereum L1, with users retaining full control over transaction visibility.
+
+### The Privacy Polylemma
+
+Privacy is notoriously difficult on public blockchains, some of the most adversarial environments for privacy, with tight technical constraints. While crypto-native users have learned to navigate these challenges, we can't expect mainstream users to accept the lack of privacy and numerous hurdles when they have access to easier, more private payment solutions elsewhere.
+
+Just as blockchains face the famous trilemma, privacy on blockchains confronts a polylemma: interconnected challenges that amplify one another and defy straightforward solutions.
+
+<img src={privacyPolylemmaImage} alt="The Privacy Polylemma" />
+
+Challenges include pooled funds with strangers, unwanted associations with unknown actors and their histories, and the stigma of visible privacy use that prompts compliance issues with exchanges and institutions. High costs make privacy inaccessible for everyday transactions, while many designs require chain-hopping to other networks, fragmenting the experience and introducing unfamiliar trust assumptions.
+
+Combined with poor UX, these factors make stablecoins impractical for non-crypto-natives. As awareness grows, businesses, institutions, and individuals will continue favoring CEXs or traditional finance over public blockchain transfers that expose financial activity.
+
+### The Mission
+
+Privacy is essential for stablecoin adoption across institutions, businesses, and individuals.
+
+The ideal solution should:
+
+1. Be stigma-free: Just because you used a privacy solution, your funds should not be scrutinized and questioned when on-ramping, off-ramping, or interacting with other services.
+2. Have great UX: so simple and intuitive that non-crypto-native users can use it without hassle. This encompasses the costs, integrations, and scalability.
+3. Not bring regulatory liability: Your funds shouldn't touch others the way they do in a mixer or pool-based design. You should not be associated with criminals and be able to reveal the transaction path of your funds at your discretion.
+4. Remain Ethereum-native: Work within the ecosystem you already understand, avoiding new blockchains with unfamiliar trust assumptions and constraints. Your funds never leave Ethereum L1. Though we're starting with L1, Mirage's design allows for future deployment across other networks.
+
+The goal is for stablecoins to feel like cash: private, simple, and accepted everywhere.
+
+### The Plan
+
+Mirage delivers flexible, undetectable privacy for stablecoin transactions on Ethereum L1. Flexible means users define privacy guarantees, acceptable costs, and compliance requirements. Transfers appear indistinguishable from ordinary transactions while remaining fully auditable when necessary.
+
+We are currently preparing for a public test environment and will share progress updates as we continue to build. In the meantime, we are excited to open-source some of the repositories we have been working on!
+
+### The Team
+
+Our team includes three full-time members and three advisors with deep experience in privacy research, protocol engineering, and product development. You can learn more about us [here](https://mirageprivacy.com).
+
+### What's Next?
+
+Follow [X](https://x.com/mirageprivacy) and [mirageprivacy.com](https://mirageprivacy.com) for progress updates, technical deep dives, and early testnet access.
+
+If you're building in the Ethereum ecosystem and want to explore integrating Mirage's privacy layer into your product, reach out — we'd love to collaborate.
+
+Stablecoins deserve better than today's privacy polylemma. We're here to solve it.
+
