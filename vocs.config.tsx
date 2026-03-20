@@ -5,7 +5,6 @@ export default defineConfig({
   title: "Mirage Blog",
   logoUrl: "/logo.svg",
   iconUrl: "/logo.svg",
-  blogDir: "./pages/posts",
   socials: [
     {
       icon: "x",
