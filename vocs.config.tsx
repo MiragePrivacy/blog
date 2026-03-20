@@ -33,6 +33,10 @@ export default defineConfig({
       text: "About Us",
       link: "https://mirageprivacy.com/#/about",
     },
+    {
+      text: "Waitlist",
+      link: "https://waitlist.mirageprivacy.com",
+    },
   ],
   head() {
     return (
