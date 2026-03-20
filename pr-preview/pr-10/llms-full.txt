@@ -1,8 +1,10 @@
 # Mirage Blog
 
-## Blog
+import PostsList from '../../components/PostsList'
 
-::blog-posts
+## Posts
+
+<PostsList />
 
 
 ## Introducing Azoth: A Deterministic EVM Bytecode Obfuscator
