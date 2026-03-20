@@ -35,17 +35,6 @@ export default defineConfig({
       link: "https://mirageprivacy.com/#/about",
     },
   ],
-  sidebar: {
-    "/posts/": [
-      {
-        text: "Navigation",
-        items: [
-          { text: "Home", link: "/" },
-          { text: "All Posts", link: "/posts" },
-        ],
-      },
-    ],
-  },
   head() {
     return (
       <>
