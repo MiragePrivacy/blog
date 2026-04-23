@@ -5,3 +5,4 @@
 - [Posts](/posts)
 - [Introducing Azoth: A Deterministic EVM Bytecode Obfuscator](/posts/introducing-azoth): We're excited to introduce Azoth, an open-source EVM bytecode obfuscator. It preserves contract logic while dissolving recognizable patterns, making reverse engineering at scale costly and impractical.
 - [Introducing Mirage](/posts/introducing-mirage): Mirage: the bet on flexible, Ethereum-native stablecoin privacy.
+- [Mirage Researcher Grants: Up to $5,000 for Independent Privacy Research](/posts/mirage-researcher-grants): Privacy infrastructure only earns trust when its claims hold up under independent scrutiny. Mirage Researcher Grants fund external researchers to test those claims directly.
