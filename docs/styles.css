@@ -233,12 +233,6 @@
   color: #fff;
 }
 
-.article-cover-frame {
-  width: min(100%, 960px);
-  margin: 32px auto 24px;
-  padding: 0 24px;
-}
-
 .article-cover-image {
   width: 100%;
   display: block;
@@ -246,6 +240,7 @@
   aspect-ratio: 2 / 1;
   object-fit: cover;
   box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
+  margin: 24px 0 32px;
 }
 
 .dark .article-cover-image {
@@ -253,9 +248,8 @@
 }
 
 @media (max-width: 768px) {
-  .article-cover-frame {
-    margin-top: 20px;
-    padding: 0 16px;
+  .article-cover-image {
+    margin: 20px 0 24px;
   }
 }
 

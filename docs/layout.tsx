@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
-import { usePageData } from "vocs";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [progress, setProgress] = useState(0);
   const [isArticle, setIsArticle] = useState(false);
-  const { frontmatter } = usePageData();
-  const basePath = import.meta.env.BASE_URL.replace(/\/?$/, "/");
-  const cover =
-    typeof frontmatter?.cover === "string"
-      ? `${basePath}${frontmatter.cover.replace(/^\//, "")}`
-      : null;
 
   useEffect(() => {
     const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -38,29 +31,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       {isArticle && (
-        <>
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: `${progress}%`,
-              height: "3px",
-              background: "linear-gradient(90deg, #f97316, #fb923c)",
-              zIndex: 9999,
-              transition: "width 50ms linear",
-            }}
-          />
-          {cover ? (
-            <div className="article-cover-frame">
-              <img
-                src={cover}
-                alt={frontmatter?.title ? `${frontmatter.title} cover` : "Post cover"}
-                className="article-cover-image"
-              />
-            </div>
-          ) : null}
-        </>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: `${progress}%`,
+            height: "3px",
+            background: "linear-gradient(90deg, #f97316, #fb923c)",
+            zIndex: 9999,
+            transition: "width 50ms linear",
+          }}
+        />
       )}
       {children}
     </>
