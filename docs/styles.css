@@ -230,7 +230,9 @@
 
 .tag-filters .tag-pill-active,
 .tag-filters .tag-pill-active:hover {
+  background: #f97316;
   color: #fff;
+  border-color: #f97316;
 }
 
 .article-cover-image {
