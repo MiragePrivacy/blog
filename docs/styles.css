@@ -38,17 +38,28 @@
   z-index: 1;
 }
 
+.hero-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
 .hero-logo {
-  width: min(220px, 42vw);
-  min-width: 160px;
+  width: min(280px, 52vw);
+  min-width: 180px;
   height: auto;
   display: block;
 }
 
+.hero-title {
+  letter-spacing: -0.03em;
+}
+
 @media (max-width: 768px) {
   .hero-logo {
-    width: min(180px, 52vw);
-    min-width: 140px;
+    width: min(220px, 60vw);
+    min-width: 150px;
   }
 }
 
