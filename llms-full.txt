@@ -7,9 +7,13 @@ import PostsList from '../../components/PostsList'
 <PostsList />
 
 
+export const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+
 ## Introducing Azoth: A Deterministic EVM Bytecode Obfuscator
 
 ::authors
+
+<img src={`${base}assets/azoth-banner.png`} alt="Introducing Azoth" className="article-cover-image" />
 
 We're excited to introduce Azoth, an open-source EVM bytecode obfuscator. It preserves contract logic while dissolving recognizable patterns, making reverse engineering at scale costly and impractical.
 
@@ -141,10 +145,13 @@ We invite you to explore the [Azoth](https://github.com/MiragePrivacy/Azoth) rep
 
 
 import privacyPolylemmaImage from "../../public/assets/privacy-polylemma.png";
+export const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
 
 ## Introducing Mirage
 
 ::authors
+
+<img src={`${base}assets/mirage-banner.png`} alt="Introducing Mirage" className="article-cover-image" />
 
 Mirage: the bet on flexible, Ethereum-native stablecoin privacy.
 
@@ -194,9 +201,13 @@ If you're building in the Ethereum ecosystem and want to explore integrating Mir
 Stablecoins deserve better than today's privacy polylemma. We're here to solve it.
 
 
-## Mirage Researcher Grants: Up to $5,000 for Independent Privacy Research
+export const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+
+## Mirage Researcher Grants for Independent Privacy Research
 
 ::authors
+
+<img src={`${base}assets/researcher-grants.png`} alt="Mirage Researcher Grants" className="article-cover-image" />
 
 Privacy infrastructure only earns trust when its claims hold up under independent scrutiny. Mirage Researcher Grants fund external researchers to test those claims directly.
 
