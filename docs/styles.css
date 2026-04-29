@@ -52,10 +52,6 @@
   display: block;
 }
 
-.hero-title {
-  letter-spacing: -0.03em;
-}
-
 @media (max-width: 768px) {
   .hero-logo {
     width: min(220px, 60vw);
