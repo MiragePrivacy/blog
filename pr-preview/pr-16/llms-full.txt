@@ -13,7 +13,7 @@ export const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
 
 ::authors
 
-<img src={`${base}assets/azoth-banner.png`} alt="Introducing Azoth" className="article-cover-image" />
+<img src={`${base}assets/azoth-banner.webp`} alt="Introducing Azoth" className="article-cover-image" />
 
 We're excited to introduce Azoth, an open-source EVM bytecode obfuscator. It preserves contract logic while dissolving recognizable patterns, making reverse engineering at scale costly and impractical.
 
@@ -144,14 +144,14 @@ After the whole transformation process, Azoth re-assembles the obfuscated runtim
 We invite you to explore the [Azoth](https://github.com/MiragePrivacy/Azoth) repository, try it out, and share feedback. If you find a way to break Azoth's obfuscation or prove semantic inequivalence, we want to talk.
 
 
-import privacyPolylemmaImage from "../../public/assets/privacy-polylemma.png";
+import privacyPolylemmaImage from "../../public/assets/privacy-polylemma.webp";
 export const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
 
 ## Introducing Mirage
 
 ::authors
 
-<img src={`${base}assets/mirage-banner.png`} alt="Introducing Mirage" className="article-cover-image" />
+<img src={`${base}assets/mirage-banner.webp`} alt="Introducing Mirage" className="article-cover-image" />
 
 Mirage: the bet on flexible, Ethereum-native stablecoin privacy.
 
@@ -207,7 +207,7 @@ export const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
 
 ::authors
 
-<img src={`${base}assets/researcher-grants.png`} alt="Mirage Researcher Grants" className="article-cover-image" />
+<img src={`${base}assets/researcher-grants.webp`} alt="Mirage Researcher Grants" className="article-cover-image" />
 
 Privacy infrastructure only earns trust when its claims hold up under independent scrutiny. Mirage Researcher Grants fund external researchers to test those claims directly.
 
