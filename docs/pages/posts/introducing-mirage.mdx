@@ -11,10 +11,17 @@ tags: ["announcement", "general"]
 ---
 
 import privacyPolylemmaImage from "../../public/assets/privacy-polylemma.png";
+export const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
 
 # Introducing Mirage
 
 ::authors
+
+<img
+  src={`${base}assets/mirage-banner.png`}
+  alt="Introducing Mirage"
+  className="article-cover-image"
+/>
 
 Mirage: the bet on flexible, Ethereum-native stablecoin privacy.
 

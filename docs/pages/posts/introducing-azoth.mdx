@@ -10,9 +10,17 @@ date: 2025-08-22
 tags: ["announcement", "azoth"]
 ---
 
+export const base = import.meta.env.BASE_URL.replace(/\/?$/, '/')
+
 # Introducing Azoth: A Deterministic EVM Bytecode Obfuscator
 
 ::authors
+
+<img
+  src={`${base}assets/azoth-banner.png`}
+  alt="Introducing Azoth"
+  className="article-cover-image"
+/>
 
 We're excited to introduce Azoth, an open-source EVM bytecode obfuscator. It preserves contract logic while dissolving recognizable patterns, making reverse engineering at scale costly and impractical.
 

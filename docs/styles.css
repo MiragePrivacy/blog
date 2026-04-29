@@ -221,6 +221,38 @@
 
 .tag-filters .tag-pill {
   background: none;
+  color: #f97316;
+}
+
+.tag-filters .tag-pill:hover {
+  color: #f97316;
+}
+
+.tag-filters .tag-pill-active,
+.tag-filters .tag-pill-active:hover {
+  background: #f97316;
+  color: #fff;
+  border-color: #f97316;
+}
+
+.article-cover-image {
+  width: 100%;
+  display: block;
+  border-radius: 20px;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
+  margin: 24px 0 32px;
+}
+
+.dark .article-cover-image {
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
+}
+
+@media (max-width: 768px) {
+  .article-cover-image {
+    margin: 20px 0 24px;
+  }
 }
 
 /* ── Card footer (tags + read more) ── */
